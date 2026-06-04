@@ -3,372 +3,762 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kishan Nayaka | Creative Web Developer & UI Designer</title>
-    <meta name="description" content="Portfolio of Kishan Nayaka, an award-winning Creative Web Developer based in Chitradurga-577501, Karnataka, India. Specialized in high-performance web applications, 3D interactions, and interactive digital experiences.">
-   
+    <title>Kishan Nayaka | Creative Web Developer & UI/UX Designer</title>
+    <meta name="description" content="Portfolio of Kishan Nayaka, an award-winning Creative Web Developer based in Chitradurga-577501, Karnataka, India. Specialized in high-performance web systems, interactive 3D frontend mechanics, and cloud visualizations.">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-   
-    <style>
-        /* --- DESIGN SYSTEM & CSS VARIABLES --- */
-        :root {
-            --clr-bg: #05040a;
-            --clr-primary: #00f0ff;      /* Electric Blue */
-            --clr-secondary: #ffaa00;    /* Cyber Gold */
-            --clr-accent: #bc34fa;       /* Cyber Purple */
-            --clr-glass-bg: rgba(12, 10, 24, 0.45);
-            --clr-glass-border: rgba(255, 255, 255, 0.08);
-            --clr-glass-glow: rgba(0, 240, 255, 0.05);
-            --clr-text-primary: #ffffff;
-            --clr-text-secondary: #b0aec6;
-            --font-display: 'Outfit', sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
-            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-snap: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* --- GLOBAL RESET & CORE STYLES --- */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-
-        body {
-            background-color: var(--clr-bg);
-            color: var(--clr-text-primary);
-            font-family: var(--font-body);
-            overflow-x: hidden;
-            min-height: 100vh;
-            line-height: 1.6;
-            perspective: 1200px;
-            transition: background-color 0.5s ease;
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--clr-bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 240, 255, 0.2);
-            border-radius: 4px;
-            border: 2px solid var(--clr-bg);
-            transition: var(--transition-smooth);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--clr-primary);
-        }
-
-        /* --- MAGNETIC CUSTOM CURSOR (FIXED FOR STABILITY) --- */
-        .custom-cursor {
-            width: 24px;
-            height: 24px;
-            border: 1.5px solid var(--clr-primary);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate3d(0, 0, 0) translate(-50%, -50%);
-            transform-origin: center;
-            pointer-events: none;
-            z-index: 10000;
-            mix-blend-mode: screen;
-            opacity: 0;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.3s;
-        }
-
-        .custom-cursor-dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--clr-primary);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate3d(0, 0, 0) translate(-50%, -50%);
-            transform-origin: center;
-            pointer-events: none;
-            z-index: 10001;
-            opacity: 0;
-            box-shadow: 0 0 8px var(--clr-primary);
-            transition: background-color 0.2s, opacity 0.3s;
-        }
-
-        /* --- CANVAS & FLOATING BACKGROUND ELEMENTS --- */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -3;
-            pointer-events: none;
-        }
-
-        /* Dynamic Glow Orbs */
-        .ambient-glow {
-            position: fixed;
-            width: 55vw;
-            height: 55vw;
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(140px);
-            z-index: -2;
-            opacity: 0.15;
-            mix-blend-mode: screen;
-            transition: transform 0.5s ease-out, background 0.5s ease;
-        }
-
-        .glow-blue {
-            top: -10%;
-            left: -10%;
-            background: radial-gradient(circle, var(--clr-primary) 0%, transparent 80%);
-            animation: floatGlow1 25s infinite alternate ease-in-out;
-        }
-
-        .glow-purple {
-            bottom: -10%;
-            right: -10%;
-            background: radial-gradient(circle, var(--clr-accent) 0%, transparent 80%);
-            animation: floatGlow2 30s infinite alternate ease-in-out;
-        }
-
-        /* --- CONTACT SECTION STYLES --- */
-        .contact-card {
-            padding: 40px;
-        }
-
-        .contact-card h2 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .contact-card p {
-            color: var(--clr-text-secondary);
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .contact-actions {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .btn-cyber {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 28px;
-            background: rgba(0, 240, 255, 0.08);
-            border: 1px solid var(--clr-primary);
-            border-radius: 8px;
-            color: #fff;
-            font-family: var(--font-display);
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            cursor: pointer;
-            overflow: hidden;
-            transition: var(--transition-smooth);
-            z-index: 10;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-cyber::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .btn-cyber:hover::before {
-            left: 100%;
-        }
-
-        .btn-cyber:hover {
-            background: var(--clr-primary);
-            color: #000;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .form-group {
-            position: relative;
-            width: 100%;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--clr-glass-border);
-            border-radius: 8px;
-            color: #fff;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            transition: var(--transition-smooth);
-        }
-
-        .form-input::placeholder {
-            color: var(--clr-text-secondary);
-        }
-
-        .form-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--clr-primary);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-        }
-
-        .contact-layout {
-            display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .glass-panel {
-            background: var(--clr-glass-bg);
-            border: 1px solid var(--clr-glass-border);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section {
-            padding: 100px 8%;
-            position: relative;
-            z-index: 2;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 60px;
-        }
-
-        .section-title {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            font-family: var(--font-display);
-            font-weight: 600;
-        }
-
-        .section-subtitle {
-            color: var(--clr-text-secondary);
-            font-size: 1rem;
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes floatGlow1 {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, -30px); }
-        }
-
-        @keyframes floatGlow2 {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-40px, 40px); }
-        }
-
-        @media (max-width: 1024px) {
-            .contact-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .contact-actions {
-                flex-direction: column;
-            }
-
-            .btn-cyber {
-                width: 100%;
-            }
-        }
-    </style>
+    
+    <!-- Link Modular Stylesheet -->
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <!-- Navigation Header -->
-    <header class="header-nav">
-        <a href="#" class="logo">Kishan <span>Dev</span></a>
+
+    <!-- Recruiter HUD Dimming Overlay -->
+    <div id="recruiter-hud-overlay" class="hud-overlay-mask"></div>
+
+    <!-- Magnetic Custom Cursor elements -->
+    <div id="custom-cursor" class="custom-cursor"></div>
+    <div id="custom-cursor-dot" class="custom-cursor-dot"></div>
+
+    <!-- Background Canvas Engine -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Ambient Glow Orbs -->
+    <div class="ambient-glow glow-blue" id="ambient-blue"></div>
+    <div class="ambient-glow glow-purple" id="ambient-purple"></div>
+
+    <!-- 3D CSS Wireframe Cube Background -->
+    <div class="cube-wrapper">
+        <div class="cube-3d">
+            <div class="cube-face face-front"></div>
+            <div class="cube-face face-back"></div>
+            <div class="cube-face face-right"></div>
+            <div class="cube-face face-left"></div>
+            <div class="cube-face face-top"></div>
+            <div class="cube-face face-bottom"></div>
+        </div>
+    </div>
+
+    <!-- Floating Background Geometric Orbs/Pyramids (SVG) -->
+    <div class="floating-shapes">
+        <svg class="shape-element shape-1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10L90 80H10L50 10Z" stroke="url(#pyramidGrad1)" stroke-width="2" stroke-dasharray="3 3"/>
+            <path d="M50 10V80" stroke="url(#pyramidGrad1)" stroke-width="2" stroke-dasharray="3 3"/>
+            <defs>
+                <linearGradient id="pyramidGrad1" x1="0" y1="0" x2="100" y2="100">
+                    <stop stop-color="var(--clr-primary)"/>
+                    <stop offset="1" stop-color="var(--clr-accent)"/>
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <svg class="shape-element shape-2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" stroke="url(#circleGrad)" stroke-width="1.5" stroke-dasharray="6 2"/>
+            <defs>
+                <linearGradient id="circleGrad" x1="0" y1="0" x2="100" y2="100">
+                    <stop stop-color="var(--clr-secondary)"/>
+                    <stop offset="1" stop-color="var(--clr-accent)"/>
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <svg class="shape-element shape-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="60" height="60" rx="10" stroke="url(#rectGrad)" stroke-width="2" transform="rotate(45 50 50)"/>
+            <defs>
+                <linearGradient id="rectGrad" x1="0" y1="0" x2="100" y2="100">
+                    <stop stop-color="var(--clr-primary)"/>
+                    <stop offset="1" stop-color="var(--clr-secondary)"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- --- HEADER NAVBAR --- -->
+    <header class="header-nav" id="navbar">
+        <a href="#" class="logo">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 6px var(--clr-primary));">
+                <path d="M20 50L50 20L80 50L50 80L20 50Z" stroke="var(--clr-primary)" stroke-width="8" stroke-linejoin="round"/>
+                <path d="M50 35L65 50L50 65L35 50L50 35Z" fill="var(--clr-primary)"/>
+            </svg>
+            Kishan<span> Nayaka</span>
+        </a>
+        
+        <div class="nav-actions-wrapper">
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Pro Recruiter Mode Overlay Toggle Switch -->
+            <button class="recruiter-hud-toggle" id="hud-toggle-btn" aria-label="Toggle Recruiter Fact Finder Panel">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span>Recruiter HUD</span>
+            </button>
+
+            <!-- Audio Toggle Control -->
+            <button class="audio-toggle" id="audio-btn" aria-label="Toggle Cyber Sound Effects">
+                <svg id="audio-off-svg" viewBox="0 0 24 24">
+                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.03c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                </svg>
+                <svg id="audio-on-svg" viewBox="0 0 24 24" style="display: none;">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+            </button>
+            
+            <button class="menu-toggle" id="menu-btn" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
     </header>
 
-    <!-- Contact Section -->
-    <section class="section" id="contact">
-        <div class="section-header">
-            <h2 class="section-title">Let's Connect</h2>
-            <p class="section-subtitle">Get in touch for collaborations and inquiries</p>
-        </div>
-        <div class="contact-layout">
-            <div class="contact-card">
-                <h2>Get In Touch</h2>
-                <p>
-                    Have a project in mind or want to collaborate? I'd love to hear from you. Drop me a message and let's create something amazing together.
-                </p>
-                <p>
-                    <strong>Email:</strong> hello@kishannayaka.com<br>
-                    <strong>Phone:</strong> +91 98765 43210<br>
-                    <strong>Location:</strong> Chitradurga, Karnataka, India
-                </p>
-                <div class="contact-actions">
-                    <button class="btn-cyber">Start a Project</button>
-                    <button class="btn-cyber">Schedule Call</button>
-                </div>
+    <!-- --- HERO SECTION WITH EMBEDDED CONSOLE --- -->
+    <section class="hero" id="hero">
+        <div class="hero-content" id="hero-profile-card">
+            <!-- Interactive 3D Avatar Profile Frame -->
+            <div class="hero-avatar-wrapper tilt-card">
+                <div class="avatar-glow"></div>
+                <img src="./avatar.png" alt="Kishan Nayaka" class="hero-avatar">
             </div>
-            <div class="contact-card glass-panel">
-                <form class="contact-form">
-                    <div class="form-group">
-                        <input type="text" class="form-input" placeholder="Your Name" required>
+            
+            <div class="badge">
+                <span class="location-beacon"></span>
+                Web Developer • Chitradurga-577501, Karnataka, India • <span style="opacity: 0.8; font-family: monospace; font-size: 0.8rem; margin-left: 4px;">LAT: 14.2251° N | LNG: 76.4010° E</span>
+            </div>
+            <h1 class="hero-title">
+                Building Immersive <span class="gradient-text">Interactive</span> Digital Experiences
+            </h1>
+            <p class="hero-description">
+                Hi, I'm Kishan Nayaka. I construct high-performance, aesthetically stunning, and creative web solutions. Specializing in responsive systems and clean vanilla architectures.
+            </p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn-cyber">Explore Projects</a>
+                <a href="#contact" class="btn-cyber btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+
+        <!-- Interactive Terminal Console Window -->
+        <div class="hero-console-wrapper">
+            <div class="glass-panel console-window">
+                <div class="console-titlebar">
+                    <div class="console-window-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="email" class="form-input" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-input" placeholder="Your Message" style="min-height: 120px; resize: vertical;" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-cyber">Send Message</button>
-                </form>
+                    <span class="console-title">developer@kishan: ~/portfolio</span>
+                </div>
+                <div class="console-body" id="console-body">
+                    <!-- Typing outputs stream here -->
+                    <div class="terminal-line text-system">KISHAN-OS [Version 3.8.5]</div>
+                    <div class="terminal-line text-system">(c) 2026 Kishan Nayaka. All systems active.</div>
+                    <div class="terminal-line text-system">Location confirmed: Chitradurga-577501, Karnataka, India.</div>
+                    <div class="terminal-line text-system" style="margin-bottom: 12px;">Type <span class="text-cmd">help</span> for a list of available CLI commands.</div>
+                    <div class="terminal-output-container" id="terminal-history"></div>
+                </div>
+                <div class="console-input-row">
+                    <span class="console-prompt">guest@kishan:~$</span>
+                    <input type="text" id="terminal-input" placeholder="type a command..." autocomplete="off" autofocus>
+                </div>
             </div>
         </div>
     </section>
 
-    <script>
-        // Form submission
-        document.querySelector('.contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
-            document.querySelector('.contact-form').reset();
-        });
-    </script>
+    <!-- --- INTERACTIVE SKILL MATRIX --- -->
+    <section class="section" id="skills">
+        <div class="section-header">
+            <span class="badge">Tech Matrix</span>
+            <h2 class="section-title">Technical Capabilities</h2>
+            <p class="section-subtitle">A curated view of modern frameworks, client-side ecosystems, and structured data layers that I work with daily.</p>
+        </div>
+
+        <div class="skills-grid" id="skills-matrix-target">
+            <!-- React Card -->
+            <div class="glass-panel skill-card tilt-card" data-level="92">
+                <div class="skill-glow-bg"></div>
+                <div class="skill-icon-wrapper">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 62.5C56.9036 62.5 62.5 56.9036 62.5 50C62.5 43.0964 56.9036 37.5 50 37.5C43.0964 37.5 37.5 43.0964 37.5 50C37.5 56.9036 43.0964 62.5 50 62.5Z"/>
+                        <path d="M50 15C76.5 15 90 32.5 90 50C90 67.5 76.5 85 50 85C23.5 85 10 67.5 10 50C10 32.5 23.5 15 50 15Z" stroke="currentColor" stroke-width="4" fill="none"/>
+                        <path d="M22.5 30C41.25 10.75 70 10.75 87.5 30C105 49.25 90 77.5 72.5 85C55 92.5 30 85 17.5 70C5 55 3.75 49.25 22.5 30Z" stroke="currentColor" stroke-width="4" fill="none" transform="rotate(60 50 50)"/>
+                        <path d="M22.5 30C41.25 10.75 70 10.75 87.5 30C105 49.25 90 77.5 72.5 85C55 92.5 30 85 17.5 70C5 55 3.75 49.25 22.5 30Z" stroke="currentColor" stroke-width="4" fill="none" transform="rotate(120 50 50)"/>
+                    </svg>
+                </div>
+                <h3 class="skill-name">React</h3>
+                <ul class="skill-details-list">
+                    <li>Hooks & Context API</li>
+                    <li>Redux & State management</li>
+                    <li>Vite & Build pipelines</li>
+                </ul>
+                <div class="skill-meter">
+                    <div class="skill-meter-fill"></div>
+                </div>
+            </div>
+
+            <!-- Vue Card -->
+            <div class="glass-panel skill-card tilt-card" data-level="85">
+                <div class="skill-glow-bg"></div>
+                <div class="skill-icon-wrapper">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 15L50 75L85 15H65L50 42L35 15H15Z"/>
+                        <path d="M35 15L50 42L65 15H50H35Z" opacity="0.5"/>
+                    </svg>
+                </div>
+                <h3 class="skill-name">Vue</h3>
+                <ul class="skill-details-list">
+                    <li>Composition API</li>
+                    <li>Pinia & Router integration</li>
+                    <li>Single File Components</li>
+                </ul>
+                <div class="skill-meter">
+                    <div class="skill-meter-fill"></div>
+                </div>
+            </div>
+
+            <!-- Next.js Card -->
+            <div class="glass-panel skill-card tilt-card" data-level="88">
+                <div class="skill-glow-bg"></div>
+                <div class="skill-icon-wrapper">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="6" fill="none"/>
+                        <path d="M35 65V35L68 65H58L38 41V65H35Z" fill="currentColor"/>
+                        <path d="M62 35H65V65H62V35Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3 class="skill-name">Next.js</h3>
+                <ul class="skill-details-list">
+                    <li>App Router & Layouts</li>
+                    <li>SSR & Static Generation</li>
+                    <li>API Routes & Server Actions</li>
+                </ul>
+                <div class="skill-meter">
+                    <div class="skill-meter-fill"></div>
+                </div>
+            </div>
+
+            <!-- Node.js Card -->
+            <div class="glass-panel skill-card tilt-card" data-level="86">
+                <div class="skill-glow-bg"></div>
+                <div class="skill-icon-wrapper">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10L85 30V70L50 90L15 70V30L50 10Z" fill="none" stroke="currentColor" stroke-width="6"/>
+                        <path d="M50 25L72 38V62L50 75L28 62V38L50 25Z" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="3 3"/>
+                        <circle cx="50" cy="50" r="10" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3 class="skill-name">Node.js</h3>
+                <ul class="skill-details-list">
+                    <li>Express framework</li>
+                    <li>REST APIs & JSON tokens</li>
+                    <li>Middleware & File management</li>
+                </ul>
+                <div class="skill-meter">
+                    <div class="skill-meter-fill"></div>
+                </div>
+            </div>
+
+            <!-- SQL Card -->
+            <div class="glass-panel skill-card tilt-card" data-level="80">
+                <div class="skill-glow-bg"></div>
+                <div class="skill-icon-wrapper">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="50" cy="25" rx="35" ry="12" fill="none" stroke="currentColor" stroke-width="6"/>
+                        <path d="M15 25V50C15 56.6 30.7 62 50 62C69.3 62 85 56.6 85 50V25" fill="none" stroke="currentColor" stroke-width="6"/>
+                        <path d="M15 50V75C15 81.6 30.7 87 50 87C69.3 87 85 81.6 85 75V50" fill="none" stroke="currentColor" stroke-width="6"/>
+                    </svg>
+                </div>
+                <h3 class="skill-name">SQL</h3>
+                <ul class="skill-details-list">
+                    <li>PostgreSQL / MySQL</li>
+                    <li>Database structuring & Schema</li>
+                    <li>Query speed optimization</li>
+                </ul>
+                <div class="skill-meter">
+                    <div class="skill-meter-fill"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- FEATURED PROJECTS MATRIX (5 PROJECTS) --- -->
+    <section class="section" id="projects">
+        <div class="section-header">
+            <span class="badge">MNC Projects</span>
+            <h2 class="section-title">Production Deliverables</h2>
+            <p class="section-subtitle">A collection of technical enterprise-grade applications focusing on cloud distribution, security scans, telemetry logs, and APIs.</p>
+        </div>
+
+        <div class="projects-grid" id="projects-matrix-target">
+            <!-- Project 1: AI Resume Builder (Direct Priority Link) -->
+            <div class="project-card tilt-card">
+                <div class="project-inner">
+                    <div class="card-glow"></div>
+                    <div class="project-info">
+                        <div class="project-visual">
+                            <div class="project-bg-graphics"></div>
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="25" y="15" width="50" height="70" rx="8" stroke="var(--clr-primary)" stroke-width="4"/>
+                                <line x1="37" y1="35" x2="63" y2="35" stroke="var(--clr-primary)" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="37" y1="50" x2="63" y2="50" stroke="var(--clr-primary)" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="37" y1="65" x2="53" y2="65" stroke="var(--clr-primary)" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="project-title">AI Resume Builder</h3>
+                        <p class="project-desc">A highly interactive system generating dynamic portfolios and summaries using generative text integrations, custom themes, and instant layouts.</p>
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">OpenAI API</span>
+                            <span class="tag">CSS variables</span>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <a href="https://kishannayaka.github.io/AI-Resume-Builder/" target="_blank" rel="noopener noreferrer" class="btn-cyber project-link">
+                            Launch Project
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Quantum Ledger -->
+            <div class="project-card tilt-card">
+                <div class="project-inner">
+                    <div class="card-glow"></div>
+                    <div class="project-info">
+                        <div class="project-visual">
+                            <div class="project-bg-graphics" style="background-image: radial-gradient(circle at 50% 50%, rgba(255, 170, 0, 0.2), transparent 70%);"></div>
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="30" stroke="var(--clr-secondary)" stroke-width="4" stroke-dasharray="8 4"/>
+                                <path d="M50 35V65" stroke="var(--clr-secondary)" stroke-width="4" stroke-linecap="round"/>
+                                <path d="M35 50H65" stroke="var(--clr-secondary)" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="project-title">Quantum Ledger</h3>
+                        <p class="project-desc">A secure real-time bookkeeping dashboard utilizing localized syncing, complex data filtering, interactive charts, and export actions.</p>
+                        <div class="project-tags">
+                            <span class="tag">Next.js</span>
+                            <span class="tag">IndexedDB</span>
+                            <span class="tag">Chart.js</span>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="btn-cyber project-link" onclick="openProjectModal('ledger')">
+                            Explore Prototype
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: AeroCore Dashboard -->
+            <div class="project-card tilt-card">
+                <div class="project-inner">
+                    <div class="card-glow"></div>
+                    <div class="project-info">
+                        <div class="project-visual">
+                            <div class="project-bg-graphics" style="background-image: radial-gradient(circle at 10% 10%, rgba(188, 52, 250, 0.25), transparent 70%);"></div>
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="20" y="20" width="60" height="60" rx="6" stroke="var(--clr-accent)" stroke-width="4"/>
+                                <path d="M20 60L40 45L60 55L80 35" stroke="var(--clr-accent)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="project-title">AeroCore Dashboard</h3>
+                        <p class="project-desc">High-frequency performance monitor visualizing complex background processes, web socket sockets connection status, and system analytics.</p>
+                        <div class="project-tags">
+                            <span class="tag">Node.js</span>
+                            <span class="tag">WebSockets</span>
+                            <span class="tag">D3.js</span>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="btn-cyber project-link" onclick="openProjectModal('dashboard')">
+                            Launch Monitor
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4: Synapse Cyberthreat Scanner -->
+            <div class="project-card tilt-card">
+                <div class="project-inner">
+                    <div class="card-glow"></div>
+                    <div class="project-info">
+                        <div class="project-visual">
+                            <div class="project-bg-graphics" style="background-image: radial-gradient(circle at 20% 20%, rgba(0, 240, 255, 0.2), transparent 70%);"></div>
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="25" y="25" width="50" height="50" rx="10" stroke="var(--clr-primary)" stroke-width="4"/>
+                                <circle cx="50" cy="50" r="12" stroke="var(--clr-primary)" stroke-width="3" fill="none"/>
+                                <line x1="50" y1="10" x2="50" y2="25" stroke="var(--clr-primary)" stroke-width="4"/>
+                                <line x1="50" y1="75" x2="50" y2="90" stroke="var(--clr-primary)" stroke-width="4"/>
+                            </svg>
+                        </div>
+                        <h3 class="project-title">Synapse Threat Scanner</h3>
+                        <p class="project-desc">A cybersecurity framework scanning packets for structural vulnerabilities. Features active canvas visual mapping and node status reports.</p>
+                        <div class="project-tags">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">WebWorker</span>
+                            <span class="tag">Security API</span>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="btn-cyber project-link" onclick="openProjectModal('threat')">
+                            Scan Threat Workspace
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5: CloudNode Pod Orchestrator -->
+            <div class="project-card tilt-card">
+                <div class="project-inner">
+                    <div class="card-glow"></div>
+                    <div class="project-info">
+                        <div class="project-visual">
+                            <div class="project-bg-graphics" style="background-image: radial-gradient(circle at 80% 80%, rgba(188, 52, 250, 0.25), transparent 70%);"></div>
+                            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="15" y="15" width="28" height="28" rx="6" stroke="var(--clr-accent)" stroke-width="4"/>
+                                <rect x="57" y="15" width="28" height="28" rx="6" stroke="var(--clr-accent)" stroke-width="4"/>
+                                <rect x="36" y="57" width="28" height="28" rx="6" stroke="var(--clr-accent)" stroke-width="4"/>
+                                <line x1="43" y1="29" x2="57" y2="29" stroke="var(--clr-accent)" stroke-width="3"/>
+                                <line x1="50" y1="43" x2="50" y2="57" stroke="var(--clr-accent)" stroke-width="3"/>
+                            </svg>
+                        </div>
+                        <h3 class="project-title">CloudNode Orchestrator</h3>
+                        <p class="project-desc">A cloud infrastructure simulator replicating pod lifecycle and scale configurations, featuring custom logs and deployment streams.</p>
+                        <div class="project-tags">
+                            <span class="tag">DevOps</span>
+                            <span class="tag">Docker</span>
+                            <span class="tag">Kubernetes</span>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="btn-cyber project-link" onclick="openProjectModal('cloud')">
+                            Verify Clusters
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- CONTACT ZONE & AVAILABILITY CALENDAR --- -->
+    <section class="section" id="contact">
+        <div class="section-header">
+            <span class="badge">Get In Touch</span>
+            <h2 class="section-title">Start A Conversation</h2>
+            <p class="section-subtitle">Have a project proposal, looking for a collaborator, or want to connect? Send a note or select a date on the calendar.</p>
+        </div>
+
+        <div class="contact-layout">
+            <!-- Formspree form column -->
+            <div class="glass-panel contact-card" id="contact-form-target">
+                <form action="https://formspree.io/f/mlgvobob" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <input type="text" id="form-name" name="name" class="form-input" placeholder=" " required>
+                        <label for="form-name" class="form-label">Full Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="form-email" name="email" class="form-input" placeholder=" " required>
+                        <label for="form-email" class="form-label">Email Address</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="form-message" name="message" class="form-input" placeholder=" " required></textarea>
+                        <label for="form-message" class="form-label">Your Message</label>
+                    </div>
+                    <button type="submit" class="btn-cyber" style="width: 100%;">
+                        Transmit Message
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Availability calendar widget column -->
+            <div class="glass-panel calendar-card" id="calendar-widget-target">
+                <div>
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">Availability / May 2026</h3>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="calendar-nav-btn" aria-label="Previous Month">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                            </button>
+                            <button class="calendar-nav-btn" aria-label="Next Month">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Weekdays -->
+                    <div class="calendar-days-grid" style="margin-bottom: 5px;">
+                        <div class="calendar-weekday">Sun</div>
+                        <div class="calendar-weekday">Mon</div>
+                        <div class="calendar-weekday">Tue</div>
+                        <div class="calendar-weekday">Wed</div>
+                        <div class="calendar-weekday">Thu</div>
+                        <div class="calendar-weekday">Fri</div>
+                        <div class="calendar-weekday">Sat</div>
+                    </div>
+
+                    <!-- Grid of days dynamically loaded -->
+                    <div class="calendar-days-grid" id="calendar-days">
+                        <!-- Loaded dynamically via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Selected day detail pane -->
+                <div class="calendar-info-pane" id="calendar-info-pane">
+                    <div class="info-title" id="info-date">
+                        <span class="day-status-dot status-available" style="position: static; display: inline-block;"></span>
+                        Select a date to check availability
+                    </div>
+                    <div class="info-desc" id="info-status-text">
+                        Hover or click on highlighted dates to coordinate scheduling. Green shows full availability for collaborative projects.
+                    </div>
+                    <button class="calendar-action-btn" id="calendar-action" style="display: none;">Request this slot</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- PORTFOLIO PROTOTYPE MODALS --- -->
+    <!-- Project 2 (Quantum Ledger) Modal -->
+    <div class="modal-overlay" id="modal-ledger">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeProjectModal('ledger')" aria-label="Close Modal">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2zm0 8H7v-2h10v2z"/></svg>
+                    Quantum Ledger Demo
+                </h3>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--clr-text-secondary); margin-bottom: 20px;">
+                An interactive micro-simulation of the client-side database caching layer. Add mock items below to watch balance calculations adjust dynamically.
+            </p>
+            <div class="mock-interface-panel">
+                <div class="ledger-summary">
+                    <span>Cache Session Workspace</span>
+                    <span class="ledger-balance" id="ledger-balance-display">$3,250.00</span>
+                </div>
+                <ul class="ledger-list" id="ledger-items-list">
+                    <li class="ledger-item income">
+                        <span>Invoice Payment (Next.js Consulting)</span>
+                        <span class="amount">+$4,500.00</span>
+                    </li>
+                    <li class="ledger-item expense">
+                        <span>Workspace Domain Registration</span>
+                        <span class="amount">-$150.00</span>
+                    </li>
+                    <li class="ledger-item expense">
+                        <span>GPU Cloud Node Server</span>
+                        <span class="amount">-$1,100.00</span>
+                    </li>
+                </ul>
+                <div class="ledger-form">
+                    <input type="text" id="ledger-desc" placeholder="Transaction name (e.g. AWS Cloud)" required>
+                    <input type="number" id="ledger-amount" placeholder="Amount ($)" required>
+                    <button onclick="addMockTransaction()">Add Cache</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 3 (AeroCore Dashboard) Modal -->
+    <div class="modal-overlay" id="modal-dashboard">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeProjectModal('dashboard')" aria-label="Close Modal">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 15l-4-4 1.41-1.41L12 15.17l5.59-5.59L19 11l-7 7z"/></svg>
+                    AeroCore Telemetry Scan
+                </h3>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--clr-text-secondary); margin-bottom: 20px;">
+                Real-time active canvas graphs updating system cycles. Simulates high-frequency web sockets syncing core computational layers.
+            </p>
+            <div class="mock-interface-panel">
+                <div class="telemetry-metrics">
+                    <div class="metric-box">
+                        <div style="font-size: 0.75rem; color: var(--clr-text-secondary);">CPU LOAD</div>
+                        <div class="metric-val" id="cpu-load-val">42%</div>
+                    </div>
+                    <div class="metric-box">
+                        <div style="font-size: 0.75rem; color: var(--clr-text-secondary);">SOCKET FLOW</div>
+                        <div class="metric-val" id="socket-flow-val">124 kb/s</div>
+                    </div>
+                    <div class="metric-box">
+                        <div style="font-size: 0.75rem; color: var(--clr-text-secondary);">RAM ALLOC</div>
+                        <div class="metric-val">4.6 GB</div>
+                    </div>
+                </div>
+                <div class="chart-container-mock">
+                    <canvas id="telemetry-canvas" style="width: 100%; height: 100%; display: block; background: rgba(0,0,0,0.5); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 4 (Synapse Threat Scanner) Modal -->
+    <div class="modal-overlay" id="modal-threat">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeProjectModal('threat')" aria-label="Close Modal">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zm1-15h-2v2h2V7zm0 4h-2v4h2v-4z"/></svg>
+                    Synapse Scanner Engine
+                </h3>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--clr-text-secondary); margin-bottom: 15px;">
+                Simulates real-time security checking on connected socket ports. Tap the run command button below to sweep vulnerability vectors.
+            </p>
+            <div class="mock-interface-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <span>Thread Status Vector</span>
+                    <button class="calendar-action-btn" onclick="runThreatScannerMock()" style="margin: 0;">Initiate Port Sweep</button>
+                </div>
+                <div class="threat-progress-bar" style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 15px; overflow: hidden;">
+                    <div id="threat-progress-fill" style="width: 0%; height: 100%; background: var(--clr-primary); transition: width 0.3s;"></div>
+                </div>
+                <div id="threat-status-log" style="height: 120px; overflow-y: auto; color: var(--clr-text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                    <div>SYSTEM: Awaiting scan initiation trigger...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 5 (CloudNode Pod Orchestrator) Modal -->
+    <div class="modal-overlay" id="modal-cloud">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeProjectModal('cloud')" aria-label="Close Modal">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                    CloudNode Orchestration Matrix
+                </h3>
+            </div>
+            <p style="font-size: 0.95rem; color: var(--clr-text-secondary); margin-bottom: 15px;">
+                Simulates dynamic Kubernetes cluster state management. Hover over active pods or scales clusters to verify thread load vectors.
+            </p>
+            <div class="mock-interface-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <span>Cluster Namespace: dev-env</span>
+                    <button class="calendar-action-btn" onclick="scaleCloudClusterMock()" style="margin: 0;">Scale Cluster Pods</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px;" id="cloud-pods-grid">
+                    <div class="metric-box pod-box status-active" style="border-color: #00ff66;">
+                        <div style="font-size: 0.7rem; color: var(--clr-text-secondary);">gateway-pod</div>
+                        <div style="font-size: 0.8rem; color: #00ff66; font-weight: bold; margin-top: 4px;">Running</div>
+                    </div>
+                    <div class="metric-box pod-box status-active" style="border-color: #00ff66;">
+                        <div style="font-size: 0.7rem; color: var(--clr-text-secondary);">auth-srv-1</div>
+                        <div style="font-size: 0.8rem; color: #00ff66; font-weight: bold; margin-top: 4px;">Running</div>
+                    </div>
+                    <div class="metric-box pod-box status-active" style="border-color: #00ff66;">
+                        <div style="font-size: 0.7rem; color: var(--clr-text-secondary);">postgres-db</div>
+                        <div style="font-size: 0.8rem; color: #00ff66; font-weight: bold; margin-top: 4px;">Running</div>
+                    </div>
+                </div>
+                <div id="cloud-console-logs" style="height: 100px; overflow-y: auto; color: #00ff66; font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px;">
+                    <div>Kube-Core established. Listening on cluster updates...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Theme Swapper Dock -->
+    <div class="theme-dock">
+        <span class="theme-dock-label">Theme</span>
+        <div class="theme-btn-container">
+            <button class="theme-btn active" style="background: #00f0ff; --theme-color: #00f0ff;" onclick="changeTheme('cyberpunk')" aria-label="Cyber Blue Theme"></button>
+            <button class="theme-btn" style="background: #39ff14; --theme-color: #39ff14;" onclick="changeTheme('matrix')" aria-label="Matrix Green Theme"></button>
+            <button class="theme-btn" style="background: #ff007f; --theme-color: #ff007f;" onclick="changeTheme('vaporwave')" aria-label="Vapor Pink Theme"></button>
+            <button class="theme-btn" style="background: #ffaa00; --theme-color: #ffaa00;" onclick="changeTheme('acidGold')" aria-label="Acid Gold Theme"></button>
+        </div>
+    </div>
+
+    <!-- --- FOOTER --- -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <a href="#" class="footer-logo">
+                    Kishan<span> Nayaka</span>
+                </a>
+                <p class="footer-text" id="footer-address-target">
+                    Engineering reliable frontend architectures, clean interactions, and modern user environments. Based in Chitradurga-577501, Karnataka, India.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="footer-title">Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#skills">Tech Capabilities</a></li>
+                    <li><a href="#projects">Work & Projects</a></li>
+                    <li><a href="#contact">Get In Touch</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-title">Inquiries & Contact</h4>
+                <div class="footer-contact-item">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    <a href="mailto:mr.nayaka.555@gmail.com" style="color: inherit; text-decoration: none;">mr.nayaka.555@gmail.com</a>
+                </div>
+                <div class="footer-contact-item" id="footer-phone-target">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                    </svg>
+                    <span>+91 9380458173</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">
+                &copy; 2026 Kishan Nayaka. All rights reserved. Created with absolute attention to detail.
+            </p>
+            <div class="social-buttons">
+                <!-- Styled Button Link for Instagram -->
+                <a href="https://www.instagram.com/mr._.nayaka._?igsh=N2l5aTlpd3RzMHMx" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram Link">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Link Modular Scripts File -->
+    <script src="./script.js"></script>
 </body>
 </html>
